@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=1.0">
+    <title>🎡 Ruleta Digital - Selector de Ganadores</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        .logo-header {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 2;
+        }
+
+        .logo {
+            width: 120px;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
+        }
+
+        .dedication {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: -10px;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+            font-style: italic;
+        }
+
+        .footer {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.3);
+            margin-top: 40px;
+            font-size: 0.8em;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #0f0c29;
+            background: linear-gradient(to right, #24243e, #302b63, #0f0c29);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Partículas flotantes de fondo */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 15s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(50px);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 37px 30px;
+            box-shadow: 0 6px 24px 0 rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            max-width: 750px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 7px;
+            font-size: 2.6em;
+            font-weight: 900;
+            letter-spacing: -1.5px;
+            filter: drop-shadow(0 0 15px rgba(102, 126, 234, 0.5));
+        }
+
+        .subtitle {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 30px;
+            font-size: 0.85em;
+            font-weight: 400;
+        }
+
+        .input-section {
+            display: flex;
+            gap: 11px;
+            margin-bottom: 22px;
+            flex-wrap: wrap;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            min-width: 200px;
+            padding: 18px 24px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            font-size: 16px;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        input[type="text"]::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #667eea;
+            box-shadow: 0 0 30px rgba(102, 126, 234, 0.4), 0 0 60px rgba(118, 75, 162, 0.2);
+            transform: translateY(-2px);
+        }
+
+        button {
+            padding: 18px 35px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 16px;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        button:hover::before {
+            left: 100%;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.6);
+        }
+
+        button:active {
+            transform: translateY(-1px);
+        }
+
+        button:disabled {
+            background: rgba(255, 255, 255, 0.1);
+            cursor: not-allowed;
+            transform: none;
+            opacity: 0.5;
+        }
+
+        .participants-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 40px;
+            min-height: 60px;
+        }
+
+        .participant-tag {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 15px;
+            font-weight: 500;
+            animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+
+        .participant-tag:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-15px) scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .remove-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .remove-btn:hover {
+            background: rgba(255, 87, 108, 0.8);
+            transform: rotate(90deg);
+        }
+
+        .wheel-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 40px 0;
+            position: relative;
+            perspective: 1000px;
+        }
+
+        .wheel-wrapper {
+            position: relative;
+            display: inline-block;
+            filter: drop-shadow(0 20px 60px rgba(102, 126, 234, 0.6));
+        }
+
+        #wheelCanvas {
+            border-radius: 50%;
+            transition: transform 0.1s;
+            border: 6px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                0 0 0 12px rgba(102, 126, 234, 0.2),
+                0 0 60px rgba(102, 126, 234, 0.4),
+                0 0 100px rgba(118, 75, 162, 0.3),
+                inset 0 0 60px rgba(255, 255, 255, 0.1);
+        }
+
+        .arrow {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 25px solid transparent;
+            border-right: 25px solid transparent;
+            border-top: 50px solid #f5576c;
+            filter: drop-shadow(0 6px 20px rgba(245, 87, 108, 0.8)) drop-shadow(0 0 30px rgba(245, 87, 108, 0.6));
+            z-index: 10;
+            animation: arrowBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes arrowBounce {
+            0%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            50% {
+                transform: translateX(-50%) translateY(-8px);
+            }
+        }
+
+        .spin-button {
+            display: block;
+            margin: 0 auto;
+            padding: 22px 60px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 22px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 
+                0 8px 30px rgba(245, 87, 108, 0.5),
+                0 0 60px rgba(240, 147, 251, 0.3);
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .spin-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .spin-button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .spin-button:hover {
+            transform: scale(1.08) translateY(-3px);
+            box-shadow: 
+                0 15px 40px rgba(245, 87, 108, 0.7),
+                0 0 80px rgba(240, 147, 251, 0.5);
+        }
+
+        .spin-button:active {
+            transform: scale(1.05) translateY(-1px);
+        }
+
+        .spin-button:disabled {
+            background: rgba(255, 255, 255, 0.1);
+            cursor: not-allowed;
+            transform: scale(1);
+            opacity: 0.4;
+            box-shadow: none;
+        }
+
+        .spin-button:disabled::before {
+            display: none;
+        }
+
+        .winner-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes fadeIn {
+            from { 
+                opacity: 0;
+            }
+            to { 
+                opacity: 1;
+            }
+        }
+
+        .winner-content {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(30px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            padding: 60px 50px;
+            border-radius: 30px;
+            text-align: center;
+            max-width: 600px;
+            animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.5),
+                0 0 100px rgba(102, 126, 234, 0.3);
+        }
+
+        @keyframes bounceIn {
+            0% {
+                transform: scale(0.3);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .winner-content h2 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            font-weight: 900;
+            letter-spacing: -1px;
+        }
+
+        .winner-name {
+            font-size: 4em;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 900;
+            margin: 30px 0;
+            filter: drop-shadow(0 4px 20px rgba(245, 87, 108, 0.5));
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                filter: drop-shadow(0 0 20px rgba(245, 87, 108, 0.5));
+            }
+            50% {
+                filter: drop-shadow(0 0 40px rgba(245, 87, 108, 0.8));
+            }
+        }
+
+        .confetti {
+            position: fixed;
+            width: 12px;
+            height: 12px;
+            position: absolute;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .close-btn {
+            margin-top: 30px;
+            padding: 18px 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-size: 18px;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2.5em;
+            }
+            
+            .container {
+                padding: 30px 20px;
+            }
+            
+            #wheelCanvas {
+                width: 300px !important;
+                height: 300px !important;
+            }
+
+            .winner-name {
+                font-size: 2.5em;
+            }
+
+            .winner-content {
+                padding: 40px 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Partículas de fondo -->
+    <div class="particles" id="particles"></div>
+
+    <div class="logo-header">
+        <img src="assets/img/Jhiros_New_SFBN.png" alt="Logo JHIROS" class="logo">
+    </div>
+
+    <div class="container">
+        <h1>🎡 Ruleta Digital</h1>
+        <p class="dedication">Creado especialmente para la Dra. Maribel Aguirre</p>
+        <p class="subtitle">¡Agrega participantes y gira la ruleta para elegir un ganador!</p>
+
+        <div class="input-section">
+            <input type="text" id="participantInput" placeholder="Escribe el nombre del participante..." onkeypress="if(event.key==='Enter') addParticipant()">
+            <button onclick="addParticipant()">➕ Agregar</button>
+        </div>
+
+        <div class="participants-list" id="participantsList"></div>
+
+        <div class="wheel-container">
+            <div class="wheel-wrapper">
+                <div class="arrow"></div>
+                <canvas id="wheelCanvas" width="400" height="400"></canvas>
+            </div>
+        </div>
+
+        <button class="spin-button" id="spinBtn" onclick="spinWheel()" disabled>
+            🎯 ¡GIRAR LA RULETA!
+        </button>
+        
+        <footer class="footer">
+            &copy; 2026 Jhiro's Edu | Todos los derechos reservados
+        </footer>
+    </div>
+
+    <div class="winner-modal" id="winnerModal">
+        <div class="winner-content">
+            <h2>🎉 ¡Tenemos un ganador! 🎉</h2>
+            <div class="winner-name" id="winnerName"></div>
+            <button class="close-btn" onclick="closeModal()">Cerrar</button>
+        </div>
+    </div>
+
+    <script>
+        // Crear partículas de fondo
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.width = Math.random() * 60 + 20 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        createParticles();
+
+        let participants = [];
+        let isSpinning = false;
+        const canvas = document.getElementById('wheelCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Paleta de colores moderna y vibrante
+        const colors = [
+            '#FF6B9D', '#C44569', '#FFA502', '#FFC312', 
+            '#12CBC4', '#1289A7', '#5F27CD', '#341F97',
+            '#00D2FF', '#3742FA', '#2ED573', '#FF4757',
+            '#FF6348', '#FF7979', '#786FA6', '#F8B500'
+        ];
+
+        function addParticipant() {
+            const input = document.getElementById('participantInput');
+            const name = input.value.trim();
+            
+            if (name && !participants.includes(name)) {
+                participants.push(name);
+                input.value = '';
+                updateParticipantsList();
+                drawWheel();
+                updateSpinButton();
+            } else if (participants.includes(name)) {
+                alert('Este participante ya está en la lista');
+            }
+        }
+
+        function removeParticipant(index) {
+            participants.splice(index, 1);
+            updateParticipantsList();
+            drawWheel();
+            updateSpinButton();
+        }
+
+        function updateParticipantsList() {
+            const list = document.getElementById('participantsList');
+            list.innerHTML = '';
+            
+            participants.forEach((name, index) => {
+                const tag = document.createElement('div');
+                tag.className = 'participant-tag';
+                tag.innerHTML = `
+                    <span>${name}</span>
+                    <button class="remove-btn" onclick="removeParticipant(${index})">✕</button>
+                `;
+                list.appendChild(tag);
+            });
+        }
+
+        function updateSpinButton() {
+            const btn = document.getElementById('spinBtn');
+            btn.disabled = participants.length < 2;
+        }
+
+        function drawWheel() {
+            if (participants.length === 0) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                // Dibujar ruleta vacía con efecto bonito
+                const centerX = canvas.width / 2;
+                const centerY = canvas.height / 2;
+                const radius = 180;
+                
+                const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius);
+                gradient.addColorStop(0, 'rgba(102, 126, 234, 0.3)');
+                gradient.addColorStop(1, 'rgba(118, 75, 162, 0.3)');
+                
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+                ctx.fillStyle = gradient;
+                ctx.fill();
+                
+                ctx.font = 'bold 20px Poppins';
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+                ctx.textAlign = 'center';
+                ctx.fillText('Agrega participantes', centerX, centerY);
+                return;
+            }
+
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = 180;
+            const anglePerSegment = (2 * Math.PI) / participants.length;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            participants.forEach((name, index) => {
+                const startAngle = index * anglePerSegment;
+                const endAngle = startAngle + anglePerSegment;
+
+                // Dibujar segmento con gradiente
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+                ctx.closePath();
+                
+                const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius);
+                const color = colors[index % colors.length];
+                gradient.addColorStop(0, color);
+                gradient.addColorStop(1, adjustBrightness(color, -20));
+                
+                ctx.fillStyle = gradient;
+                ctx.fill();
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+                ctx.lineWidth = 4;
+                ctx.stroke();
+
+                // Dibujar texto
+                ctx.save();
+                ctx.translate(centerX, centerY);
+                ctx.rotate(startAngle + anglePerSegment / 2);
+                ctx.textAlign = 'center';
+                ctx.fillStyle = '#fff';
+                ctx.font = 'bold 18px Poppins';
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.7)';
+                ctx.shadowBlur = 8;
+                ctx.fillText(name, radius / 1.5, 6);
+                ctx.restore();
+            });
+
+            // Centro decorativo con gradiente
+            const centerGradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, 30);
+            centerGradient.addColorStop(0, '#ffffff');
+            centerGradient.addColorStop(1, '#f0f0f0');
+            
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 30, 0, 2 * Math.PI);
+            ctx.fillStyle = centerGradient;
+            ctx.fill();
+            ctx.strokeStyle = '#667eea';
+            ctx.lineWidth = 4;
+            ctx.stroke();
+            
+            // Círculo interior decorativo
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 15, 0, 2 * Math.PI);
+            ctx.fillStyle = '#667eea';
+            ctx.fill();
+        }
+
+        // Función para ajustar brillo del color
+        function adjustBrightness(color, amount) {
+            const num = parseInt(color.replace('#', ''), 16);
+            const r = Math.max(0, Math.min(255, (num >> 16) + amount));
+            const g = Math.max(0, Math.min(255, ((num >> 8) & 0x00FF) + amount));
+            const b = Math.max(0, Math.min(255, (num & 0x0000FF) + amount));
+            return '#' + (0x1000000 + (r << 16) + (g << 8) + b).toString(16).slice(1);
+        }
+
+        function spinWheel() {
+            if (isSpinning || participants.length < 2) return;
+            
+            isSpinning = true;
+            document.getElementById('spinBtn').disabled = true;
+
+            const spinDuration = 5000; // 5 segundos
+            const spinRotations = 8 + Math.random() * 5; // 8-13 vueltas
+            const totalRotation = spinRotations * 360;
+            const startTime = Date.now();
+
+            function animate() {
+                const elapsed = Date.now() - startTime;
+                const progress = Math.min(elapsed / spinDuration, 1);
+                
+                // Función de desaceleración suave
+                const easeOut = 1 - Math.pow(1 - progress, 4);
+                const currentRotation = totalRotation * easeOut;
+
+                canvas.style.transform = `rotate(${currentRotation}deg)`;
+
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                } else {
+                    const finalAngle = (currentRotation % 360);
+                    const anglePerSegment = 360 / participants.length;
+                    const adjustedAngle = (360 - finalAngle + 90) % 360;
+                    const winnerIndex = Math.floor(adjustedAngle / anglePerSegment) % participants.length;
+                    
+                    showWinner(participants[winnerIndex]);
+                    isSpinning = false;
+                    document.getElementById('spinBtn').disabled = false;
+                }
+            }
+
+            animate();
+        }
+
+        function showWinner(name) {
+            setTimeout(() => {
+                document.getElementById('winnerName').textContent = name;
+                document.getElementById('winnerModal').style.display = 'flex';
+                createConfetti();
+            }, 500);
+        }
+
+        function createConfetti() {
+            const colors = ['#FF6B9D', '#C44569', '#FFA502', '#12CBC4', '#5F27CD', '#00D2FF', '#2ED573', '#FF4757'];
+            const shapes = ['circle', 'square'];
+            
+            for (let i = 0; i < 150; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.top = '-20px';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.borderRadius = shapes[Math.floor(Math.random() * shapes.length)] === 'circle' ? '50%' : '0';
+                    confetti.style.animation = `confetti-fall ${2 + Math.random() * 2}s linear`;
+                    confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                    document.body.appendChild(confetti);
+                    
+                    setTimeout(() => confetti.remove(), 4000);
+                }, i * 20);
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('winnerModal').style.display = 'none';
+        }
+
+        // Dibujar ruleta inicial
+        drawWheel();
+    </script>
+</body>
+</html>
